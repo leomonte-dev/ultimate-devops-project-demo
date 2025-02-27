@@ -39,10 +39,17 @@ jobs:
             - name: checkout code
               uses: actions/checkout@v4
 
-            - name: Run golangci-list
-              run: |
-                    go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.56.2
-                    golangci-lint run src/product-catalog/...
+            - name: Setup Go 1.22
+              uses: actions/setup-go@v2
+              with:
+                go-version: 1.22
+
+            - name: Run golangci-lint
+              uses: golangci/golangci-lint-action@v6
+              with:
+                version: v1.55.2
+                run: golangci-lint run
+                working-directory: src/product-catalog
 
     docker:
         runs-on: ubuntu-latest
@@ -83,7 +90,7 @@ jobs:
 
             - name: Update tag in kubernetes deployment manifest
               run: |
-                    sed -i 's/image: .*/image: ${{ secrets.DOCKER_USERNAME }}/product-catalog:${{github.run_id}}/' kubernetes/productcatalog/deploy.yaml
+                    sed -i "s|image: .*|image: ${{ secrets.DOCKER_USERNAME }}/product-catalog:${{github.run_id}}|" kubernetes/productcatalog/deploy.yaml
 
             - name: Commit and push changes
               run: |
