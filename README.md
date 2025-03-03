@@ -27,6 +27,8 @@ Our goals are threefold:
 - Create a living example for OpenTelemetry contributors to use for testing new
   versions of the API, SDK, and other components or enhancements.
 
+
+
 We've already made [huge
 progress](https://github.com/open-telemetry/opentelemetry-demo/blob/main/CHANGELOG.md),
 and development is ongoing. We hope to represent the full feature set of
